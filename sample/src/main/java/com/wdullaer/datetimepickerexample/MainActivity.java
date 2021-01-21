@@ -1,12 +1,13 @@
 package com.wdullaer.datetimepickerexample;
 
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import android.support.design.widget.TabLayout;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.support.v13.app.FragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -18,14 +19,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        adapter = new PickerAdapter(getSupportFragmentManager());
+        adapter = new PickerAdapter(getFragmentManager());
         viewPager = findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
 
-        setSupportActionBar(findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        for(int i=0; i < adapter.getCount(); i++) //noinspection ConstantConditions
+        for(int i=0;i<adapter.getCount();i++) //noinspection ConstantConditions
             tabLayout.getTabAt(i).setText(adapter.getTitle(i));
     }
 

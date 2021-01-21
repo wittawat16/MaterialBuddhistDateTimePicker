@@ -10,16 +10,22 @@ public class DatePickerDialogTest {
     // isHighlighted
     @Test
     public void isHighlightedShouldReturnFalseIfNoHighlightedDaysAreSet() {
-        DatePickerDialog dpd = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
+            }
         });
         Assert.assertFalse(dpd.isHighlighted(1990, 1, 1));
     }
 
     @Test
     public void isHighlightedShouldReturnFalseIfHighlightedDoesNotContainSelection() {
-        DatePickerDialog dpd = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
+            }
         });
         Calendar highlighted = Calendar.getInstance();
         highlighted.set(Calendar.YEAR, 1990);
@@ -35,8 +41,11 @@ public class DatePickerDialogTest {
 
     @Test
     public void isHighlightedShouldReturnTrueIfHighlightedDoesContainSelection() {
-        DatePickerDialog dpd = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
+            }
         });
         int year = 1990;
         int month = 1;
@@ -58,8 +67,11 @@ public class DatePickerDialogTest {
     public void isHighlightedShouldBehaveCorrectlyInCustomTimezones() {
         String timeZoneString = "Americas/Los_Angeles";
         Calendar initial = Calendar.getInstance(TimeZone.getTimeZone(timeZoneString));
-        DatePickerDialog dpd = DatePickerDialog.newInstance((view, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
+            }
         }, initial);
         int year = 1990;
         int month = 1;

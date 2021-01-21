@@ -31,8 +31,6 @@ import android.view.View;
 import com.wdullaer.materialdatetimepicker.R;
 import com.wdullaer.materialdatetimepicker.Utils;
 
-import java.lang.ref.WeakReference;
-
 /**
  * View to show what number is selected. This will draw a blue circle over the number, with a blue
  * line coming from the center of the main circle to the edge of the blue selection.
@@ -138,7 +136,7 @@ public class RadialSelectorView extends View {
         mAnimationRadiusMultiplier = 1;
         mTransitionMidRadiusMultiplier = 1f + (0.05f * (disappearsOut? -1 : 1));
         mTransitionEndRadiusMultiplier = 1f + (0.3f * (disappearsOut? 1 : -1));
-        mInvalidateUpdateListener = new InvalidateUpdateListener(this);
+        mInvalidateUpdateListener = new InvalidateUpdateListener();
 
         setSelection(selectionDegrees, isInnerCircle, false);
         mIsInitialized = true;
@@ -178,7 +176,6 @@ public class RadialSelectorView extends View {
     /**
      * Set the multiplier for the radius. Will be used during animations to move in/out.
      */
-    @SuppressWarnings("unused")
     public void setAnimationRadiusMultiplier(float animationRadiusMultiplier) {
         mAnimationRadiusMultiplier = animationRadiusMultiplier;
     }
@@ -380,19 +377,10 @@ public class RadialSelectorView extends View {
     /**
      * We'll need to invalidate during the animation.
      */
-    private static class InvalidateUpdateListener implements AnimatorUpdateListener {
-        private final WeakReference<RadialSelectorView> selectorRef;
-
-        InvalidateUpdateListener(RadialSelectorView selectorView) {
-            this.selectorRef = new WeakReference<>(selectorView);
-        }
-
+    private class InvalidateUpdateListener implements AnimatorUpdateListener {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            RadialSelectorView selectorView = selectorRef.get();
-            if (selectorView != null) {
-                selectorView.invalidate();
-            }
+            RadialSelectorView.this.invalidate();
         }
     }
 }

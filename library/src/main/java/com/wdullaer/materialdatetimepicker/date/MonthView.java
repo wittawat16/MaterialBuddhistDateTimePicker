@@ -26,11 +26,11 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.customview.widget.ExploreByTouchHelper;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
+import android.support.v4.widget.ExploreByTouchHelper;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -414,11 +414,11 @@ public abstract class MonthView extends View {
         formatter.setTimeZone(mController.getTimeZone());
         formatter.applyLocalizedPattern(pattern);
         mStringBuilder.setLength(0);
-        final String monthYear = formatter.format(mCalendar.getTime());
+
         if (locale.getLanguage().equalsIgnoreCase(Utils.LOCALE_TH)) {
-            return Utils.getThaiYear(monthYear);
+            return Utils.getThaiYear(formatter.format(mCalendar.getTime()));
         } else {
-            return monthYear;
+            return formatter.format(mCalendar.getTime());
         }
     }
 
@@ -711,9 +711,6 @@ public abstract class MonthView extends View {
             node.setBoundsInParent(mTempRect);
             node.addAction(AccessibilityNodeInfo.ACTION_CLICK);
 
-            // Flag non-selectable dates as disabled
-            node.setEnabled(!mController.isOutOfRange(mYear, mMonth, virtualViewId));
-
             if (virtualViewId == mSelectedDay) {
                 node.setSelected(true);
             }
@@ -762,7 +759,14 @@ public abstract class MonthView extends View {
          */
         CharSequence getItemDescription(int day) {
             mTempCalendar.set(mYear, mMonth, day);
-            return DateFormat.format(DATE_FORMAT, mTempCalendar.getTimeInMillis());
+            final CharSequence date = DateFormat.format(DATE_FORMAT,
+                    mTempCalendar.getTimeInMillis());
+
+            if (day == mSelectedDay) {
+                return getContext().getString(R.string.mdtp_item_is_selected, date);
+            }
+
+            return date;
         }
     }
 

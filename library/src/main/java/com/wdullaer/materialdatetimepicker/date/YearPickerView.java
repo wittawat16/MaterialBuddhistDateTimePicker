@@ -39,6 +39,8 @@ import java.util.Locale;
  * Displays a selectable list of years.
  */
 public class YearPickerView extends ListView implements OnItemClickListener, OnDateChangedListener {
+    private static final String TAG = "YearPickerView";
+
     private final DatePickerController mController;
     private YearAdapter mAdapter;
     private int mViewSize;
@@ -91,12 +93,11 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
     }
 
     private static int getYearFromTextView(TextView view) {
-        String yearString = view.getText().toString();
-        Integer year = Integer.parseInt(yearString);
         if (Locale.getDefault().getLanguage().equalsIgnoreCase(Utils.LOCALE_TH)) {
-            year = Integer.parseInt(yearString) - Utils.BUDDHIST_OFFSET;
+            return Integer.valueOf(view.getText().toString()) - Utils.BUDDHIST_OFFSET;
+        } else {
+            return Integer.valueOf(view.getText().toString());
         }
-        return Integer.valueOf(year.toString());
     }
 
     private final class YearAdapter extends BaseAdapter {
@@ -144,7 +145,6 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
             } else {
                 v.setText(String.format(mController.getLocale(),"%d", year));
             }
-
             v.drawIndicator(selected);
             v.requestLayout();
             if (selected) {
@@ -159,9 +159,13 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
     }
 
     public void postSetSelectionFromTop(final int position, final int offset) {
-        post(() -> {
-            setSelectionFromTop(position, offset);
-            requestLayout();
+        post(new Runnable() {
+
+            @Override
+            public void run() {
+                setSelectionFromTop(position, offset);
+                requestLayout();
+            }
         });
     }
 

@@ -19,13 +19,14 @@ package com.wdullaer.materialdatetimepicker;
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
-import androidx.annotation.AttrRes;
-import androidx.core.content.ContextCompat;
+import android.support.annotation.AttrRes;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -50,17 +51,23 @@ public class Utils {
     public static final int SELECTED_ALPHA_THEME_DARK = 255;
     // Alpha level for fully opaque.
     public static final int FULL_ALPHA = 255;
+
     public static final int BUDDHIST_OFFSET = 543;
     public static final String LOCALE_TH = "th";
 
     private static SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy", Locale.getDefault());
 
+    public static boolean isJellybeanOrLater() {
+      return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
     /**
      * Try to speak the specified text, for accessibility. Only available on JB or later.
      * @param text Text to announce.
      */
+    @SuppressLint("NewApi")
     public static void tryAccessibilityAnnounce(View view, CharSequence text) {
-        if (view != null && text != null) {
+        if (isJellybeanOrLater() && view != null && text != null) {
             view.announceForAccessibility(text);
         }
     }
@@ -81,6 +88,7 @@ public class Utils {
         }
         return monthYear;
     }
+
 
     /**
      * Render an animator to pulsate a view in place.

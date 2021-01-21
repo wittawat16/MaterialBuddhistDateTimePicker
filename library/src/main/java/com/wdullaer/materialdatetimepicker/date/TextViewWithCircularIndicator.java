@@ -16,7 +16,6 @@
 
 package com.wdullaer.materialdatetimepicker.date;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
@@ -24,16 +23,17 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.R;
 
 /**
  * A text view which, when pressed or activated, displays a colored circle around the text.
  */
-public class TextViewWithCircularIndicator extends androidx.appcompat.widget.AppCompatTextView {
+public class TextViewWithCircularIndicator extends TextView {
 
     private static final int SELECTED_CIRCLE_ALPHA = 255;
 
@@ -103,7 +103,6 @@ public class TextViewWithCircularIndicator extends androidx.appcompat.widget.App
         super.onDraw(canvas);
     }
 
-    @SuppressLint("GetContentDescriptionOverride")
     @Override
     public CharSequence getContentDescription() {
         CharSequence itemText = getText();
